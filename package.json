@@ -1,5 +1,5 @@
 {
-  "name": "car",
+  "name": "",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,10 @@
     "dev": "next dev --turbopack",
     "format": "prettier --write --ignore-unknown .",
     "lint": "next lint",
-    "start": "next start"
+    "prepare": "husky; git config blame.ignoreRevsFile .git-blame-ignore-revs",
+    "spellcheck": "cspell --config=cspell.json \"**/*.{cjs,js,md,mjs,ts,tsx}\" --no-progress --show-context --show-suggestions",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.6",
@@ -36,10 +39,12 @@
     "ag-grid-community": "^33.1.0",
     "ag-grid-react": "^33.1.0",
     "chart.js": "^4.4.7",
+    "babel-plugin-react-compiler": "^19.0.0-beta-3229e95-20250315",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cspell": "^8.17.5",
     "d3": "^7.9.0",
-    "date-fns": "^4.1.0",
+    "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.5.2",
     "exceljs": "^4.4.0",
     "framer-motion": "^12.4.3",
@@ -53,9 +58,9 @@
     "next-themes": "^0.4.4",
     "papaparse": "^5.5.2",
     "plotly.js": "^3.0.0",
-    "react": "^19.0.0",
+    "react": "^18.0.0",
     "react-day-picker": "8.10.1",
-    "react-dom": "^19.0.0",
+    "react-dom": "^18.0.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "^2.15.1",
     "sonner": "^1.7.4",
@@ -70,15 +75,21 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
+    "husky": "^9.1.7",
     "postcss": "^8",
     "prettier": "^3.5.1",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "pretty-quick": "^4.0.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "packageManager": "pnpm@10.6.5+sha512.cdf928fca20832cd59ec53826492b7dc25dc524d4370b6b4adbf65803d32efaa6c1c88147c0ae4e8d579a6c9eec715757b50d4fa35eea179d868eada4ed043af",
+  "engines": {
+    "bun": ">=1.2.5",
+    "node": ">=22.14.0"
   }
 }
