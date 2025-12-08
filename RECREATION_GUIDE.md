@@ -274,10 +274,10 @@ export default App;
 
 ## Step 9: Upgrade to Next.js 16 (Optional)
 
-If you want to use Next.js 16 (canary), upgrade after the initial setup:
+If you want to use Next.js 16 (stable), upgrade after the initial setup:
 
 ```bash
-pnpm add next@canary eslint-config-next@canary
+pnpm add next@latest eslint-config-next@latest
 ```
 
 ## Step 10: Verify Installation
