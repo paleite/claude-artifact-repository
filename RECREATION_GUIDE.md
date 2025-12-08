@@ -24,6 +24,7 @@ This guide outlines the steps to recreate this repository from scratch using `sh
     ```
 
 3.  **Enable Corepack and set up pnpm:**
+    > **Note:** Corepack works best after a package.json exists, but can be enabled globally first.
     ```bash
     corepack enable pnpm
     corepack use pnpm@latest
@@ -33,28 +34,19 @@ This guide outlines the steps to recreate this repository from scratch using `sh
 
 Use the `shadcn` CLI to bootstrap a new Next.js project. This command will set up Next.js (latest), Tailwind CSS, TypeScript, and the base directories (`src`, `app`, `lib`, etc.) automatically.
 
+> **Important:** Use `pnpx` instead of `npx` to ensure pnpm is used for package management. Use the `-y` flag and command-line options to avoid interactive prompts.
+
 ```bash
-npx shadcn@latest init
+pnpx shadcn@latest init -y --template next --base-color zinc --src-dir --css-variables
 ```
 
-**Follow the interactive prompts:**
+When prompted for the project name, enter `car`.
 
-1.  **Project template**: `Next.js`
-2.  **Project name**: `car`
-3.  **Would you like to use TypeScript?**: `Yes`
-4.  **Would you like to use ESLint?**: `Yes`
-5.  **Would you like to use Tailwind CSS?**: `Yes`
-6.  **Would you like to use `src/` directory?**: `Yes`
-7.  **Would you like to use App Router?**: `Yes`
-8.  **Customize the default import alias (@/\*)?**: `No` (or press Enter to accept `@/*`)
-9.  **Which style would you like to use?**: `New York`
-10. **Which color would you like to use as base color?**: `Zinc`
-11. **Would you like to use CSS variables for colors?**: `Yes`
-
-Once completed, navigate into your new project:
+> **Note:** Shadcn will create a subdirectory named `car`. After initialization completes, move all files from the `car` subdirectory to the current directory:
 
 ```bash
-cd car
+mv car/* car/.* . 2>/dev/null || true
+rmdir car
 ```
 
 ## Step 3: Configure Root Configuration Files
@@ -162,8 +154,10 @@ We need to install the project dependencies. **Crucially**, we must keep `zod` a
 
 1.  **Install Specific Versions:**
 
+    > **Important for zsh users:** Quote version strings containing `^` to prevent shell interpretation.
+
     ```bash
-    pnpm add zod@^3 @hookform/resolvers@^4.1.3
+    pnpm add "zod@^3" "@hookform/resolvers@^4.1.3"
     ```
 
 2.  **Install Additional Application Libraries:**
@@ -178,6 +172,7 @@ We need to install the project dependencies. **Crucially**, we must keep `zod` a
     ```
 
 3.  **Update `@types/node` and Dev Dependencies:**
+
     ```bash
     pnpm add -D @types/node@latest
     pnpm add -D prettier husky prettier-plugin-tailwindcss pretty-quick
@@ -205,8 +200,10 @@ Initialize Husky using the recommended `init` command. This automates setting up
 
 Install all available components from the shadcn registry. This ensures all UI components (`src/components/ui`) are present.
 
+> **Note:** Use `pnpx` and the `-y` flag to skip confirmation prompts.
+
 ```bash
-npx shadcn@latest add --all
+pnpx shadcn@latest add --all -y
 ```
 
 ## Step 7: Configure Project Scripts
@@ -218,13 +215,15 @@ Update the `scripts` section in `package.json` to include the project's standard
     "build": "next build",
     "dev": "next dev --turbopack",
     "format": "prettier --write --ignore-unknown .",
-    "lint": "next lint",
+    "lint": "eslint --fix .",
     "prepare": "husky; git config blame.ignoreRevsFile .git-blame-ignore-revs",
     "spellcheck": "cspell --config=cspell.json \"**/*.{cjs,js,md,mjs,ts,tsx}\" --no-progress --show-context --show-suggestions",
     "start": "next start",
     "typecheck": "tsc --noEmit"
   }
 ```
+
+> **Note:** We use `eslint --fix .` instead of `next lint` for more direct control over linting.
 
 ## Step 8: Update Code
 
@@ -272,3 +271,35 @@ function App() {
 
 export default App;
 ```
+
+## Step 9: Upgrade to Next.js 16 (Optional)
+
+If you want to use Next.js 16 (canary), upgrade after the initial setup:
+
+```bash
+pnpm add next@canary eslint-config-next@canary
+```
+
+## Step 10: Verify Installation
+
+Run the development server to verify everything works:
+
+```bash
+pnpm run dev
+```
+
+Open <http://localhost:3000> in your browser. You should see the "Hello World" message.
+
+## Common Issues
+
+### Issue: Commands with `^` fail in zsh
+
+**Solution:** Always quote version strings: `"package@^version"`
+
+### Issue: Shadcn creates nested directory
+
+**Solution:** Move files from the subdirectory to root as shown in Step 2
+
+### Issue: pnpm not found
+
+**Solution:** Ensure Corepack is enabled: `corepack enable pnpm`
