@@ -43,7 +43,7 @@ function useCarousel() {
 }
 
 const Carousel = ({
-  orientation = "horizontal",
+  orientation,
   opts,
   setApi,
   plugins,
@@ -51,10 +51,12 @@ const Carousel = ({
   children,
   ...props
 }: React.ComponentProps<"div"> & CarouselProps) => {
+  const resolvedOrientation =
+    orientation ?? (opts?.axis === "y" ? "vertical" : "horizontal");
   const [carouselRef, api] = useEmblaCarousel(
     {
       ...opts,
-      axis: orientation === "horizontal" ? "x" : "y",
+      axis: resolvedOrientation === "horizontal" ? "x" : "y",
     },
     plugins,
   );
@@ -106,10 +108,7 @@ const Carousel = ({
     api.on("select", onSelect);
 
     return () => {
-      if (typeof api === "undefined") {
-        return;
-      }
-
+      api.off("reInit", onSelect);
       api.off("select", onSelect);
     };
   }, [api, onSelect]);
@@ -120,7 +119,7 @@ const Carousel = ({
         carouselRef,
         api,
         opts,
-        orientation,
+        orientation: resolvedOrientation,
         scrollPrev,
         scrollNext,
         canScrollPrev,

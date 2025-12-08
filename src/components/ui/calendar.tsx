@@ -161,7 +161,7 @@ CalendarRoot.displayName = "CalendarRoot";
 const CalendarChevron = ({
   orientation,
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & {
+}: React.ComponentProps<typeof ChevronLeftIcon> & {
   orientation?: "left" | "right" | "up" | "down";
 }) => {
   if (orientation === "left") {
