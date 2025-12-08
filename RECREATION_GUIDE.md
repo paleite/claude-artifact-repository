@@ -272,7 +272,56 @@ function App() {
 export default App;
 ```
 
-## Step 9: Upgrade to Next.js 16 (Optional)
+## Step 9: Configure TypeScript with @tsconfig/bases
+
+Use the community-maintained TypeScript configuration bases for better type checking:
+
+```bash
+pnpm add -D @tsconfig/next @tsconfig/strictest
+```
+
+Update `tsconfig.json` to extend from `@tsconfig/next`:
+
+```json
+{
+  "extends": "@tsconfig/next/tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}
+```
+
+> **Note:** We extend from `@tsconfig/next` only (not `@tsconfig/strictest`) to maintain compatibility with shadcn components.
+
+## Step 10: Upgrade to Next.js 16 (Optional)
 
 If you want to use Next.js 16 (stable), upgrade after the initial setup:
 
@@ -280,7 +329,7 @@ If you want to use Next.js 16 (stable), upgrade after the initial setup:
 pnpm add next@latest eslint-config-next@latest
 ```
 
-## Step 10: Verify Installation
+## Step 11: Verify Installation
 
 Run the development server to verify everything works:
 

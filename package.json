@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev --turbopack",
     "format": "prettier --write --ignore-unknown .",
-    "lint": "eslint --fix .",
+    "lint": "eslint --cache --fix .",
     "prepare": "husky; git config blame.ignoreRevsFile .git-blame-ignore-revs",
     "spellcheck": "cspell --config=cspell.json \"**/*.{cjs,js,md,mjs,ts,tsx}\" --no-progress --show-context --show-suggestions",
     "start": "next start",
@@ -82,6 +82,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@tanstack/eslint-plugin-query": "^5.91.2",
     "@tsconfig/next": "^2.0.4",
     "@tsconfig/strictest": "^2.0.8",
     "@types/node": "^24.10.1",
@@ -89,12 +90,23 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import-x": "^4.16.1",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-unused-imports": "^4.3.0",
+    "globals": "^16.5.0",
     "husky": "^9.1.7",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "pretty-quick": "^4.2.2",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.4.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.48.1"
   }
 }
