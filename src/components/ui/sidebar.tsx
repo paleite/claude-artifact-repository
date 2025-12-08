@@ -90,7 +90,9 @@ const SidebarProvider = ({
 
   // Helper to toggle the sidebar.
   const toggleSidebar = React.useCallback(() => {
-    return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open);
+    return isMobile
+      ? setOpenMobile((openState) => !openState)
+      : setOpen((openState) => !openState);
   }, [isMobile, setOpen, setOpenMobile]);
 
   // Adds a keyboard shortcut to toggle the sidebar.
@@ -267,6 +269,7 @@ const SidebarTrigger = ({
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       size="icon"
+      type="button"
       variant="ghost"
       onClick={(event) => {
         onClick?.(event);
@@ -302,6 +305,7 @@ const SidebarRail = ({
       data-slot="sidebar-rail"
       tabIndex={-1}
       title="Toggle Sidebar"
+      type="button"
       onClick={toggleSidebar}
       {...props}
     />
@@ -448,6 +452,7 @@ const SidebarGroupAction = ({
       )}
       data-sidebar="group-action"
       data-slot="sidebar-group-action"
+      type="button"
       {...props}
     />
   );
@@ -537,6 +542,7 @@ const SidebarMenuButton = ({
       data-sidebar="menu-button"
       data-size={size}
       data-slot="sidebar-menu-button"
+      type="button"
       {...props}
     />
   );
@@ -627,6 +633,7 @@ const SidebarMenuSkeleton = ({
 }) => {
   // Random width between 50 to 90%.
   const width = React.useMemo(() => {
+    // eslint-disable-next-line
     return `${Math.floor(Math.random() * 40) + 50}%`;
   }, []);
 

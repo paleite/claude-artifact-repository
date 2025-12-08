@@ -30,7 +30,7 @@ const Calendar = ({
     <DayPicker
       captionLayout={captionLayout}
       className={cn(
-        "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
+        "bg-background group/calendar p-3 [--cell-size:--spacing(8)] in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:bg-transparent",
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className,
@@ -123,46 +123,10 @@ const Calendar = ({
         ...classNames,
       }}
       components={{
-        Root: ({ className, rootRef, ...props }) => {
-          return (
-            <div
-              ref={rootRef}
-              className={cn(className)}
-              data-slot="calendar"
-              {...props}
-            />
-          );
-        },
-        Chevron: ({ className, orientation, ...props }) => {
-          if (orientation === "left") {
-            return (
-              <ChevronLeftIcon className={cn("size-4", className)} {...props} />
-            );
-          }
-
-          if (orientation === "right") {
-            return (
-              <ChevronRightIcon
-                className={cn("size-4", className)}
-                {...props}
-              />
-            );
-          }
-
-          return (
-            <ChevronDownIcon className={cn("size-4", className)} {...props} />
-          );
-        },
+        Root: CalendarRoot,
+        Chevron: CalendarChevron,
         DayButton: CalendarDayButton,
-        WeekNumber: ({ children, ...props }) => {
-          return (
-            <td {...props}>
-              <div className="flex size-(--cell-size) items-center justify-center text-center">
-                {children}
-              </div>
-            </td>
-          );
-        },
+        WeekNumber: CalendarWeekNumber,
         ...components,
       }}
       formatters={{
@@ -176,6 +140,62 @@ const Calendar = ({
   );
 };
 
+const CalendarRoot = ({
+  className,
+  rootRef,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & {
+  rootRef?: React.Ref<HTMLDivElement>;
+}) => {
+  return (
+    <div
+      ref={rootRef}
+      className={cn(className)}
+      data-slot="calendar"
+      {...props}
+    />
+  );
+};
+CalendarRoot.displayName = "CalendarRoot";
+
+const CalendarChevron = ({
+  orientation,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & {
+  orientation?: "left" | "right" | "up" | "down";
+}) => {
+  if (orientation === "left") {
+    return (
+      <ChevronLeftIcon className={cn("size-4", props.className)} {...props} />
+    );
+  }
+  if (orientation === "right") {
+    return (
+      <ChevronRightIcon className={cn("size-4", props.className)} {...props} />
+    );
+  }
+
+  return (
+    <ChevronDownIcon className={cn("size-4", props.className)} {...props} />
+  );
+};
+CalendarChevron.displayName = "CalendarChevron";
+
+const CalendarWeekNumber = ({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLTableCellElement>) => {
+  return (
+    <td className={className} {...props}>
+      <div className="flex size-(--cell-size) items-center justify-center text-center">
+        {children}
+      </div>
+    </td>
+  );
+};
+CalendarWeekNumber.displayName = "CalendarWeekNumber";
+
 const CalendarDayButton = ({
   className,
   day,
@@ -185,11 +205,12 @@ const CalendarDayButton = ({
   const defaultClassNames = getDefaultClassNames();
 
   const ref = React.useRef<HTMLButtonElement>(null);
+  const focused = modifiers["focused"];
   React.useEffect(() => {
-    if (modifiers["focused"]) {
+    if (focused) {
       ref.current?.focus();
     }
-  }, [modifiers["focused"]]);
+  }, [focused]);
 
   return (
     <Button

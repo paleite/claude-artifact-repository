@@ -61,12 +61,12 @@ const Carousel = ({
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
 
-  const onSelect = React.useCallback((api: CarouselApi) => {
-    if (!api) {
+  const onSelect = React.useCallback((carouselApi: CarouselApi) => {
+    if (!carouselApi) {
       return;
     }
-    setCanScrollPrev(api.canScrollPrev());
-    setCanScrollNext(api.canScrollNext());
+    setCanScrollPrev(carouselApi.canScrollPrev());
+    setCanScrollNext(carouselApi.canScrollNext());
   }, []);
 
   const scrollPrev = React.useCallback(() => {
@@ -106,7 +106,11 @@ const Carousel = ({
     api.on("select", onSelect);
 
     return () => {
-      api?.off("select", onSelect);
+      if (typeof api === "undefined") {
+        return;
+      }
+
+      api.off("select", onSelect);
     };
   }, [api, onSelect]);
 
@@ -116,8 +120,7 @@ const Carousel = ({
         carouselRef,
         api,
         opts,
-        orientation:
-          orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+        orientation,
         scrollPrev,
         scrollNext,
         canScrollPrev,
@@ -200,6 +203,7 @@ const CarouselPrevious = ({
       data-slot="carousel-previous"
       disabled={!canScrollPrev}
       size={size}
+      type="button"
       variant={variant}
       onClick={scrollPrev}
       {...props}
@@ -230,6 +234,7 @@ const CarouselNext = ({
       data-slot="carousel-next"
       disabled={!canScrollNext}
       size={size}
+      type="button"
       variant={variant}
       onClick={scrollNext}
       {...props}
