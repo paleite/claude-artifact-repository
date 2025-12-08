@@ -22,7 +22,7 @@ const Progress = ({
       <ProgressPrimitive.Indicator
         className="bg-primary h-full w-full flex-1 transition-all"
         data-slot="progress-indicator"
-        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+        style={{ transform: `translateX(-${100 - (value ?? 0)}%)` }}
       />
     </ProgressPrimitive.Root>
   );

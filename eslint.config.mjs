@@ -23,7 +23,7 @@ const eslintConfig = defineConfig([
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ["*.config.{js,cjs,mjs,ts}"],
+          allowDefaultProject: ["*.config.{js,cjs,mjs}", "eslint.config.mjs"],
         },
         tsconfigRootDir: import.meta.dirname,
       },
@@ -44,10 +44,25 @@ const eslintConfig = defineConfig([
     },
   },
 
-  // Promise plugin
-  // NOTE: eslint-plugin-promise is not properly typed
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  pluginPromise.configs["flat/recommended"],
+  // Promise plugin - using manual configuration instead of configs
+  {
+    plugins: {
+      promise: pluginPromise,
+    },
+    rules: {
+      "promise/always-return": "error",
+      "promise/no-return-wrap": "error",
+      "promise/param-names": "error",
+      "promise/catch-or-return": "error",
+      "promise/no-nesting": "warn",
+      "promise/no-promise-in-callback": "warn",
+      "promise/no-callback-in-promise": "warn",
+      "promise/avoid-new": "off",
+      "promise/no-new-statics": "error",
+      "promise/no-return-in-finally": "warn",
+      "promise/valid-params": "warn",
+    },
+  },
 
   // TanStack Query plugin
   ...pluginQuery.configs["flat/recommended"],
