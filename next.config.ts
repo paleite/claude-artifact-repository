@@ -1,11 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  turbopack: { root: __dirname },
   reactStrictMode: true,
-
-  experimental: {
-    reactCompiler: true,
-  },
 
   output: "export",
 };
