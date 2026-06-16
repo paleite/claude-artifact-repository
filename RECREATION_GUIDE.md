@@ -50,8 +50,13 @@ Enable Corepack and prepare pnpm:
 
 ```bash
 corepack enable pnpm
-corepack use pnpm@latest
+pnpm --version
 ```
+
+Do not run `corepack use pnpm@latest` from inside this checkout if Corepack
+detects a parent workspace outside the repository. In that case it may try to
+write a `package.json` outside this repo. Use the active Corepack-managed
+`pnpm`, or set the package manager field from the actual repo root only.
 
 ## Step 2: Initialize Project via shadcn
 
@@ -163,10 +168,10 @@ export default {
 ```json
 {
   "version": "0.2",
-  "ignorePaths": [],
+  "ignorePaths": [".next", "out"],
   "dictionaryDefinitions": [],
   "dictionaries": [],
-  "words": [],
+  "words": ["cmdk", "dedup", "Embla", "importx", "turbopack"],
   "ignoreWords": [],
   "import": []
 }
@@ -229,14 +234,24 @@ pnpm add -D @types/node@latest @types/react@latest @types/react-dom@latest \
 Install ESLint dependencies. Keep ESLint on v9; do not use ESLint 10 yet.
 
 ```bash
-pnpm add -D eslint@^9 eslint-formatter-unix@latest \
-  @eslint/js @eslint/eslintrc eslint-config-next@latest eslint-config-prettier@latest \
+pnpm add -D eslint@^9 @eslint/js@^9 eslint-formatter-unix@latest \
+  @eslint/eslintrc eslint-config-next@latest eslint-config-prettier@latest \
   typescript-eslint@latest @tanstack/eslint-plugin-query@latest \
   eslint-import-resolver-typescript@latest eslint-plugin-import-x@latest \
   eslint-plugin-promise@latest eslint-plugin-react@latest eslint-plugin-react-hooks@latest \
   eslint-plugin-react-refresh@latest eslint-plugin-simple-import-sort@latest \
   eslint-plugin-unused-imports@latest globals@latest
 ```
+
+If pnpm reports `ERR_PNPM_UNEXPECTED_STORE`, reinstall dependencies with the
+active pnpm before adding more packages:
+
+```bash
+pnpm install
+```
+
+If pnpm asks to remove and recreate `node_modules`, accept it. This only links
+ignored dependencies again and avoids mixing stores from different pnpm versions.
 
 ## Step 5: Configure Husky and Git Hooks
 
@@ -391,6 +406,13 @@ not recreate the repo's behavior.
 
 ## Step 11: Verify Installation
 
+Remove ignored build output before verification so cspell does not scan generated
+`out/` or `.next/` JavaScript:
+
+```bash
+rm -rf out .next
+```
+
 Run:
 
 ```bash
@@ -449,4 +471,25 @@ Enable Corepack:
 
 ```bash
 corepack enable pnpm
+```
+
+### pnpm store mismatch
+
+If pnpm reports `ERR_PNPM_UNEXPECTED_STORE`, run:
+
+```bash
+pnpm install
+```
+
+Accept the prompt to recreate `node_modules`. Do not hand-edit lock files to work
+around this.
+
+### cspell scans build output
+
+If spellcheck reports hundreds of unknown words from `out/_next` or `.next`, the
+ignored build output exists locally. Remove it and rerun spellcheck:
+
+```bash
+rm -rf out .next
+pnpm run spellcheck
 ```
