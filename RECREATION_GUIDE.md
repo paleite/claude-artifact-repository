@@ -168,7 +168,7 @@ We need to install the project dependencies. **Crucially**, we must keep `zod` a
     babel-plugin-react-compiler chart.js class-variance-authority clsx cmdk cspell d3 date-fns \
     embla-carousel-react exceljs framer-motion input-otp katex lodash lucide-react mammoth mathjs \
     next-themes papaparse plotly.js react-day-picker react-hook-form react-resizable-panels \
-    recharts sonner tailwind-merge tailwindcss-animate tensorflow three tone vaul xlsx
+    recharts sonner tailwind-merge tensorflow three tone vaul xlsx
     ```
 
 3.  **Update `@types/node` and Dev Dependencies:**
@@ -260,7 +260,7 @@ function App() {
       <h1 className="text-2xl font-bold">Hello World</h1>
       <p>
         Replace the content in{" "}
-        <code className="bg-secondary text-secondary-foreground rounded-md p-1 text-sm">
+        <code className="rounded-md bg-secondary p-1 text-sm text-secondary-foreground">
           src/components/artifact.tsx
         </code>{" "}
         with your own content.

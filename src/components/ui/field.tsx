@@ -148,9 +148,9 @@ const FieldDescription = ({
   return (
     <p
       className={cn(
-        "text-muted-foreground text-sm leading-normal font-normal group-has-[[data-orientation=horizontal]]/field:text-balance",
+        "text-sm leading-normal font-normal text-muted-foreground group-has-[[data-orientation=horizontal]]/field:text-balance",
         "last:mt-0 nth-last-2:-mt-1 [[data-variant=legend]+&]:-mt-1.5",
-        "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
+        "[&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
         className,
       )}
       data-slot="field-description"
@@ -179,7 +179,7 @@ const FieldSeparator = ({
       <Separator className="absolute inset-0 top-1/2" />
       {children && (
         <span
-          className="bg-background text-muted-foreground relative mx-auto block w-fit px-2"
+          className="relative mx-auto block w-fit bg-background px-2 text-muted-foreground"
           data-slot="field-separator-content"
         >
           {children}
@@ -230,7 +230,7 @@ const FieldError = ({
 
   return (
     <div
-      className={cn("text-destructive text-sm font-normal", className)}
+      className={cn("text-sm font-normal text-destructive", className)}
       data-slot="field-error"
       role="alert"
       {...props}

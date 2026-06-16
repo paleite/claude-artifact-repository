@@ -49,7 +49,7 @@ const TableFooter = ({
   return (
     <tfoot
       className={cn(
-        "bg-muted/50 border-t font-medium [&>tr]:last:border-b-0",
+        "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
         className,
       )}
       data-slot="table-footer"
@@ -62,7 +62,7 @@ const TableRow = ({ className, ...props }: React.ComponentProps<"tr">) => {
   return (
     <tr
       className={cn(
-        "hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
+        "border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
         className,
       )}
       data-slot="table-row"
@@ -75,7 +75,7 @@ const TableHead = ({ className, ...props }: React.ComponentProps<"th">) => {
   return (
     <th
       className={cn(
-        "text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className,
       )}
       data-slot="table-head"
@@ -103,7 +103,7 @@ const TableCaption = ({
 }: React.ComponentProps<"caption">) => {
   return (
     <caption
-      className={cn("text-muted-foreground mt-4 text-sm", className)}
+      className={cn("mt-4 text-sm text-muted-foreground", className)}
       data-slot="table-caption"
       {...props}
     />

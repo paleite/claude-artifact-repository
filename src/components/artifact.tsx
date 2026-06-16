@@ -4,7 +4,7 @@ const App = () => {
       <h1 className="text-2xl font-bold">Hello World</h1>
       <p>
         Replace the content in{" "}
-        <code className="bg-secondary text-secondary-foreground rounded-md p-1 text-sm">
+        <code className="rounded-md bg-secondary p-1 text-sm text-secondary-foreground">
           src/components/artifact.tsx
         </code>{" "}
         with your own content.
