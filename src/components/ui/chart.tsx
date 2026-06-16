@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import * as RechartsPrimitive from "recharts";
 import type { TooltipValueType } from "recharts";
+import * as RechartsPrimitive from "recharts";
 
 import { cn } from "@/lib/utils";
 
@@ -39,7 +39,7 @@ function useChart() {
   return context;
 }
 
-function ChartContainer({
+const ChartContainer = ({
   id,
   className,
   children,
@@ -55,22 +55,22 @@ function ChartContainer({
     width: number;
     height: number;
   };
-}) {
+}) => {
   const uniqueId = React.useId();
   const chartId = `chart-${id ?? uniqueId.replace(/:/g, "")}`;
 
   return (
     <ChartContext.Provider value={{ config }}>
       <div
-        data-slot="chart"
-        data-chart={chartId}
         className={cn(
           "[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border flex aspect-video justify-center text-xs [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
           className,
         )}
+        data-chart={chartId}
+        data-slot="chart"
         {...props}
       >
-        <ChartStyle id={chartId} config={config} />
+        <ChartStyle config={config} id={chartId} />
         <RechartsPrimitive.ResponsiveContainer
           initialDimension={initialDimension}
         >
@@ -79,7 +79,7 @@ function ChartContainer({
       </div>
     </ChartContext.Provider>
   );
-}
+};
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
@@ -102,6 +102,7 @@ ${colorConfig
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ??
       itemConfig.color;
+
     return color ? `  --color-${key}: ${color};` : null;
   })
   .join("\n")}
@@ -116,7 +117,7 @@ ${colorConfig
 
 const ChartTooltip = RechartsPrimitive.Tooltip;
 
-function ChartTooltipContent({
+const ChartTooltipContent = ({
   active,
   payload,
   className,
@@ -143,7 +144,7 @@ function ChartTooltipContent({
       TooltipNameType
     >,
     "accessibilityLayer"
-  >) {
+  >) => {
   const { config } = useChart();
 
   const tooltipLabel = React.useMemo(() => {
@@ -268,11 +269,11 @@ function ChartTooltipContent({
       </div>
     </div>
   );
-}
+};
 
 const ChartLegend = RechartsPrimitive.Legend;
 
-function ChartLegendContent({
+const ChartLegendContent = ({
   className,
   hideIcon = false,
   payload,
@@ -281,7 +282,7 @@ function ChartLegendContent({
 }: React.ComponentProps<"div"> & {
   hideIcon?: boolean;
   nameKey?: string;
-} & RechartsPrimitive.DefaultLegendContentProps) {
+} & RechartsPrimitive.DefaultLegendContentProps) => {
   const { config } = useChart();
 
   if (!payload?.length) {
@@ -325,7 +326,7 @@ function ChartLegendContent({
         })}
     </div>
   );
-}
+};
 
 // Helper to extract item config from a payload.
 function getPayloadConfigFromPayload(
@@ -366,9 +367,9 @@ function getPayloadConfigFromPayload(
 
 export {
   ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
+  ChartTooltip,
+  ChartTooltipContent,
 };

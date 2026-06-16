@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
+
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const metadata: Metadata = {
