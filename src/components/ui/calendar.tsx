@@ -82,7 +82,7 @@ const Calendar = ({
             : "flex h-8 items-center gap-1 rounded-md pr-1 pl-2 text-sm [&>svg]:size-3.5 [&>svg]:text-muted-foreground",
           defaultClassNames.caption_label,
         ),
-        table: "w-full border-collapse",
+        month_grid: "w-full border-collapse",
         weekdays: cn("flex", defaultClassNames.weekdays),
         weekday: cn(
           "flex-1 rounded-md text-[0.8rem] font-normal text-muted-foreground select-none",
@@ -189,10 +189,10 @@ const CalendarDayButton = ({
 
   const ref = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
-    if (modifiers.focused) {
+    if (modifiers["focused"]) {
       ref.current?.focus();
     }
-  }, [modifiers.focused]);
+  }, [modifiers["focused"]]);
 
   return (
     <Button
@@ -203,14 +203,14 @@ const CalendarDayButton = ({
         className,
       )}
       data-day={day.date.toLocaleDateString()}
-      data-range-end={modifiers.range_end}
-      data-range-middle={modifiers.range_middle}
-      data-range-start={modifiers.range_start}
+      data-range-end={modifiers["range_end"]}
+      data-range-middle={modifiers["range_middle"]}
+      data-range-start={modifiers["range_start"]}
       data-selected-single={
-        modifiers.selected &&
-        !modifiers.range_start &&
-        !modifiers.range_end &&
-        !modifiers.range_middle
+        modifiers["selected"] &&
+        !modifiers["range_start"] &&
+        !modifiers["range_end"] &&
+        !modifiers["range_middle"]
       }
       size="icon"
       variant="ghost"
