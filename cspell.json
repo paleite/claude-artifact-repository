@@ -3,7 +3,7 @@
   "ignorePaths": [],
   "dictionaryDefinitions": [],
   "dictionaries": [],
-  "words": ["Embla", "nums"],
+  "words": ["cmdk", "dedup", "Embla", "importx", "turbopack"],
   "ignoreWords": [],
   "import": []
 }

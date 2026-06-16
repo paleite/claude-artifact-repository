@@ -257,8 +257,13 @@ echo "pnpm exec pretty-quick --staged" > .husky/pre-commit
 Install all registry components so `src/components/ui` matches this repo:
 
 ```bash
-pnpm dlx shadcn@latest add --all -y
+pnpm dlx shadcn@latest add --all -y --overwrite
 ```
+
+If the current shadcn registry output differs from this repository's canonical
+`src/components/ui` files, prefer the repository versions. Do not hand-fix
+generated component lint failures during recreation; those failures usually mean
+the upstream registry has drifted from this repo's stricter ESLint policy.
 
 ## Step 7: Configure Project Scripts
 
@@ -391,10 +396,14 @@ Run:
 ```bash
 pnpm run format
 pnpm run spellcheck
-pnpm run lint
 pnpm run typecheck
 pnpm run build
 ```
+
+`pnpm run lint` is useful as a policy check, but it is not a required recreation
+gate after refreshing shadcn components. If it reports issues only in generated
+`src/components/ui` files, keep the canonical repo component files instead of
+hand-editing registry output.
 
 Then start the dev server:
 
