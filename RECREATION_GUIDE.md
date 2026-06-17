@@ -1,6 +1,6 @@
 # Recreation Guide for CAR (Claude Artifact Repository)
 
-<!-- cspell:words cmdk exceljs katex papaparse plotly turbopack -->
+<!-- cspell:words cmdk EMFILE exceljs katex papaparse plotly turbopack Watchpack -->
 
 This guide recreates this repository from scratch with the current toolchain:
 Next.js 16, React 19, Tailwind CSS 4, shadcn, pnpm, TypeScript, Prettier, Husky,
@@ -517,6 +517,96 @@ pnpm install
 
 Accept the prompt to recreate `node_modules`. Do not hand-edit lock files to work
 around this.
+
+If `pnpm install` says everything is already up to date but `pnpm add` still
+fails with the same store mismatch, the existing `node_modules` links point at a
+different pnpm store than the one the current command wants to use. Remove the
+ignored install output and relink it from the active store:
+
+```bash
+rm -rf node_modules
+pnpm install
+```
+
+If the failing command wants the project-local store at `.pnpm-store`, relink
+explicitly:
+
+```bash
+rm -rf node_modules
+pnpm install --store-dir .pnpm-store
+```
+
+Do not commit `.pnpm-store`; it is a local package cache and belongs in
+`.gitignore`.
+
+### shadcn uses Bun instead of pnpm
+
+shadcn detects the package manager from lock files. If a stale `bun.lock`,
+`package-lock.json`, or `yarn.lock` exists, shadcn may run the wrong installer
+even though the guide uses pnpm. Remove non-pnpm lock files before running
+shadcn:
+
+```bash
+rm -f bun.lock package-lock.json yarn.lock
+```
+
+### Dev server hits `EMFILE`
+
+If `pnpm run dev` repeatedly logs `Watchpack Error (watcher): Error: EMFILE:
+too many open files, watch`, check for large ignored folders in the repo root.
+A project-local `.pnpm-store` can create enough files to exhaust the watcher
+limit. Remove the ignored cache after `node_modules` has been linked:
+
+```bash
+rm -rf .pnpm-store
+pnpm run dev
+```
+
+If `node_modules` was linked from `.pnpm-store`, keep the cache until package
+installation is complete, then remove it before starting the dev server.
+
+### Generated shadcn files fail typecheck
+
+The repo uses `@tsconfig/strictest`, including `exactOptionalPropertyTypes` and
+`noPropertyAccessFromIndexSignature`. Fresh shadcn output can fail typecheck
+even when the app builds conceptually. Fix only the narrow TypeScript
+compatibility issues needed for `pnpm run typecheck`, and keep the generated
+component behavior intact.
+
+Known fixes from the current shadcn defaults:
+
+- In `src/components/ui/calendar.tsx`, use `month_grid` instead of the obsolete
+  `table` class key.
+- Omit optional props instead of passing `undefined`, such as `locale`.
+- Access DayPicker modifier flags with bracket syntax, such as
+  `modifiers["selected"]`.
+- In `src/components/ui/sonner.tsx`, resolve `theme` before passing it to
+  `<Sonner />` so `undefined` is not passed to a required exact optional type.
+
+### Generated shadcn files fail lint
+
+`pnpm run lint` is intentionally stricter than the upstream shadcn registry.
+After regenerating components, lint may report issues such as nested component
+definitions, use-before-define, React Compiler rules, shadowed names, or strict
+unsafe type rules in `src/components/ui`. Treat lint as a policy check, not a
+recreation gate, unless the errors are in app-owned files outside generated UI
+components.
+
+### `next start` fails with static export
+
+This repo uses static export output. After `pnpm run build`, `pnpm run start`
+may fail with:
+
+```text
+"next start" does not work with "output: export" configuration.
+```
+
+Use `pnpm run dev` for the development server. To verify the built static output
+without Next's dev watcher, serve `out/` with a static file server:
+
+```bash
+python3 -m http.server 3000 --directory out
+```
 
 ### cspell scans build output
 
