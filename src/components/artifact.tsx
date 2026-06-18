@@ -1,4 +1,4 @@
-const App = () => {
+function App() {
   return (
     <div className="mx-auto grid max-w-lg gap-4 px-4 py-8">
       <h1 className="text-2xl font-bold">Hello World</h1>
@@ -11,6 +11,6 @@ const App = () => {
       </p>
     </div>
   );
-};
+}
 
 export default App;

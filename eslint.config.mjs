@@ -1,6 +1,5 @@
 // @ts-check
 import js from "@eslint/js";
-import pluginQuery from "@tanstack/eslint-plugin-query";
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
@@ -149,12 +148,6 @@ const NON_RECOMMENDED_PRESETS = [
     effect: "Next + TypeScript integration bundle",
     useWhen: "Next.js + TypeScript",
     doNotUseWhen: "No Next or no TypeScript",
-  },
-  {
-    preset: "@tanstack/eslint-plugin-query/flat/recommended",
-    effect: "Query lifecycle/cache correctness rules",
-    useWhen: "TanStack Query is used",
-    doNotUseWhen: "No TanStack Query usage",
   },
 ];
 
@@ -312,9 +305,6 @@ const eslintConfig = defineConfig(
       },
     },
 
-    // TanStack Query plugin
-    ...pluginQuery.configs["flat/recommended"],
-
     // Simple import sort
     {
       plugins: {
@@ -373,13 +363,7 @@ const eslintConfig = defineConfig(
           "error",
           { props: "never", children: "ignore" },
         ],
-        "react/function-component-definition": [
-          "warn",
-          {
-            namedComponents: "arrow-function",
-            unnamedComponents: "arrow-function",
-          },
-        ],
+        "react/function-component-definition": ["warn"],
         "react/jsx-sort-props": [
           "warn",
           { callbacksLast: true, shorthandFirst: true, reservedFirst: true },
