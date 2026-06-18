@@ -1,9 +1,9 @@
 {
   "version": "0.2",
-  "ignorePaths": [],
+  "ignorePaths": [".next", "out"],
   "dictionaryDefinitions": [],
   "dictionaries": [],
-  "words": ["Embla", "nums"],
+  "words": ["cmdk", "dedup", "Embla", "importx", "turbopack"],
   "ignoreWords": [],
   "import": []
 }
